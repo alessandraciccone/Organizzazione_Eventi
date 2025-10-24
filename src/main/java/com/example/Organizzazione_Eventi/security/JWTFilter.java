@@ -1,3 +1,5 @@
+
+/*
 package com.example.Organizzazione_Eventi.security;
 
 
@@ -60,4 +62,4 @@ public class JWTFilter extends OncePerRequestFilter {
             return new AntiPatgMatcher().match("/auth/**", request.getServletPath());
         }
     }
-}
+*/

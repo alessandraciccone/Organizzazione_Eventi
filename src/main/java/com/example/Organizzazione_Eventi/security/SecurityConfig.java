@@ -1,3 +1,5 @@
+/*
+
 package com.example.Organizzazione_Eventi.security;
 
 
@@ -35,3 +37,4 @@ public class SecurityConfig {
         return http.build();
     }
 }
+*/
