@@ -13,7 +13,7 @@ public class Evento {
     private String descrizione;
     private String luogo;
     private LocalDate data;
-    private int postiDisponibili;
+    private Integer postiDisponibili;
 
     @ManyToOne
     @JoinColumn(name="organizzatore_id")
@@ -24,7 +24,7 @@ public class Evento {
 
 public Evento(){};
 
-    public Evento(String titolo, String descrizione, String luogo, LocalDate data, int postiDisponibili, User organizzatore, List<Prenotazione> prenotazioni) {
+    public Evento(String titolo, String descrizione, String luogo, LocalDate data, Integer postiDisponibili, User organizzatore, List<Prenotazione> prenotazioni) {
         this.titolo = titolo;
         this.descrizione = descrizione;
         this.luogo = luogo;
@@ -71,11 +71,11 @@ public Evento(){};
         this.data = data;
     }
 
-    public int getPostiDisponibili() {
+    public Integer getPostiDisponibili() {
         return postiDisponibili;
     }
 
-    public void setPostiDisponibili(int postiDisponibili) {
+    public void setPostiDisponibili(Integer postiDisponibili) {
         this.postiDisponibili = postiDisponibili;
     }
 

@@ -1,8 +1,9 @@
-/*
+
 
 package com.example.Organizzazione_Eventi.security;
 
 import entities.User;
+import exceptions.UnauthorizedException;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -57,4 +58,3 @@ public class JWWTTools {
     }
 
 }
-*/

@@ -16,6 +16,6 @@ public record UpdateEventoDTO(
         @Future(message="La data deve essere futura!")
         LocalDate data,
         @Min(value=1, message="i posti disponibili devono essere almeno uno")
-        int postiDisponibili
+        Integer postiDisponibili
 
 ){}

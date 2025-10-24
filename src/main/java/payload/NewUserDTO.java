@@ -1,5 +1,6 @@
 package payload;
 
+import entities.Ruolo;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,5 +16,8 @@ public record NewUserDTO(
 
         @NotBlank(message = "Password obbligatoria!")
         @Size(min = 8, message = "La password deve avere minimo 8 caratteri!")
-        String password
-) {}
+        String password,
+  @NotNull(message = "Il ruolo è obbligatorio")
+                Ruolo ruolo
+){}
+

@@ -1,65 +1,67 @@
-
-/*
 package com.example.Organizzazione_Eventi.security;
 
-
 import entities.User;
+import exceptions.UnauthorizedException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import payload.UserResponseDTO;
+import service.UserService;
 
 import java.io.IOException;
 import java.util.UUID;
 
 @Component
 public class JWTFilter extends OncePerRequestFilter {
-    private final JWWTTools jwtTools;
+
+    private final JWWTTools jwwtTools;
     private final UserService userService;
 
     public JWTFilter(JWWTTools jwtTools, UserService userService) {
-        this.jwtTools = jwtTools;
+        this.jwwtTools = jwtTools;
         this.userService = userService;
+    }
 
-        @Override
-        protected void doFilterInternal (HttpServletRequest request, HttpServletResponse response, FilterChain
-        filterChain)throw ServletException,
-        IOException {
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
 
-            //recuperiamo tokern
-            String authHeader = request.hetHeader("Authorization");
-            if (authHeader == null || !authHeader.startsWith("Bearer")) {
-                throw new UnauthorizedException("token mancante");
-            }
-            //estriamo token
-            String accessToken = authHeader.replace("Bearer", "");
-            //verifichiamo validità token
-            jwtTools.verifyToken(accessToken);
-            //prendiamo id utente del token
+        String authHeader = request.getHeader("Authorization");
 
-            UUID userId = jwtTools.extractIdFromToken(accessToken);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response); // lascio passare se non c'è token (gestirà SecurityConfig)
+            return;
+        }
 
-            //prendiamo utente dal db
+        String accessToken = authHeader.replace("Bearer ", "").trim();
 
-            User found = userService.findById(userId);
+        try {
+            jwwtTools.verifyToken(accessToken);
 
-            // creo authentication
-            Authentication authentication = new UsernamePasswordAuthenticationToken(found, null, found.getAuthorities());
+            UUID userId = jwwtTools.extractIdFromToken(accessToken);
+            UserResponseDTO found = userService.findById(userId);
+
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(found, null, found.getAuthorities());
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            filterChain.doFilter(request, respon00se00);
+        } catch (Exception e) {
+            throw new UnauthorizedException("Token non valido o scaduto");
         }
 
-
-        @Override
-        protected boolean shouldNotFilter (httpServletRequest request)throw ServletException {
-            return new AntiPatgMatcher().match("/auth/**", request.getServletPath());
-        }
+        filterChain.doFilter(request, response);
     }
-*/
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        // escludo gli endpoint di autenticazione dal filtro
+        return request.getServletPath().startsWith("/auth/");
+    }
+}

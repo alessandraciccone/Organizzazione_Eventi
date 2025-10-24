@@ -1,7 +1,4 @@
-/*
-
 package com.example.Organizzazione_Eventi.security;
-
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,9 +14,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    private final JWTFilter jwtfilter;
-    public SecurituConfig(JWTFilter jwtFilter){
-        this.jwtFilter=jwtFilter;
+
+    private final JWTFilter jwtFilter;
+
+    public SecurityConfig(JWTFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
     }
 
     @Bean
@@ -28,13 +27,16 @@ public class SecurityConfig {
         http.formLogin(form -> form.disable());
         http.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/auth**").permitAll().anyRequest().authenticated());
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/auth/**").permitAll() // endpoint pubblici
+                .anyRequest().authenticated()
+        );
 
         http.cors(Customizer.withDefaults());
 
-        http.addFilterBefore(, UsernamePasswordAuthenticationFilter.class);
+
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 }
-*/

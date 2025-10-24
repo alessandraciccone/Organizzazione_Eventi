@@ -22,4 +22,7 @@ public record NewEventoDTO(
         int postiDisponibili,
         @NotNull(message="L'organizzatore è obbligatorio")
         UUID organizzatoreID
-){}
+){
+    public UUID organizzatoreId() {
+    }
+}
