@@ -5,7 +5,6 @@ import entities.User;
 import exceptions.BadRequestException;
 import exceptions.NotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Service;
 import payload.NewUserDTO;
 import payload.UpdateUserDTO;
@@ -34,7 +33,13 @@ public class UserService {
 
         User user = new User(dto.nome(), dto.email(), dto.password(), dto.ruolo(), null, null);
         User saved = userRepository.save(user);
-        return new UserResponseDTO(saved.getId(), saved.getNome(), saved.getEmail(), saved.getRuolo().name());
+        return new UserResponseDTO(
+                user.getId(),
+                user.getNome(),
+                user.getEmail(),
+                user.getRuolo().name()
+        );
+        new UserResponseDTO(saved.getId(), saved.getNome(), saved.getEmail(), saved.getRuolo().name());
 
     }
     //cerca utenti

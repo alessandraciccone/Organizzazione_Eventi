@@ -9,20 +9,23 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public record NewEventoDTO(
-        @NotBlank(message="il titolo è obbligatorio")
+        @NotBlank(message = "il titolo è obbligatorio")
         String titolo,
-        @NotBlank(message="la descrizione è obbligatoia")
+
+        @NotBlank(message = "la descrizione è obbligatoria")
         String descrizione,
-        @NotBlank(message="il luogo è obbligatorio")
+
+        @NotBlank(message = "il luogo è obbligatorio")
         String luogo,
-        @NotNull(message="la data è obbligatoria!")
-        @Future( message="La data deve essere futura")
+
+        @NotNull(message = "la data è obbligatoria!")
+        @Future(message = "La data deve essere futura")
         LocalDate data,
-        @Min(value=1, message ="i posti disponibili devono essere almeno uno")
+
+        @Min(value = 1, message = "i posti disponibili devono essere almeno uno")
         int postiDisponibili,
-        @NotNull(message="L'organizzatore è obbligatorio")
-        UUID organizzatoreID
-){
-    public UUID organizzatoreId() {
-    }
-}
+
+        @NotNull(message = "L'organizzatore è obbligatorio")
+        UUID organizzatoreId
+) {}
+
